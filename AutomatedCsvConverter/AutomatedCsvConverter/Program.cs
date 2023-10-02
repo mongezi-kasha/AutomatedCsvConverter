@@ -22,15 +22,19 @@ class Program
         Console.WriteLine("Enter the desired CSV file name: ");
         string outputFileName = Console.ReadLine();
 
-        ConvertExcelToCsvWithColumns(inputFilePath, outputFileName);
+        Console.WriteLine("Enter the password for the Excel file: ");
+        string excelPassword = Console.ReadLine();
+
+        ConvertPasswordProtectedExcelToCsvWithColumns(inputFilePath, outputFileName, excelPassword);
 
         Console.WriteLine("Conversion successful!");
     }
-    static void ConvertExcelToCsvWithColumns(string inputFilePath, string outputFileName)
+
+    static void ConvertPasswordProtectedExcelToCsvWithColumns(string inputFilePath, string outputFileName, string excelPassword)
     {
         try
         {
-            using (var package = new ExcelPackage(new FileInfo(inputFilePath)))
+            using (var package = new ExcelPackage(new FileInfo(inputFilePath), excelPassword))
             {
                 var worksheet = package.Workbook.Worksheets[0]; // Assumes only one worksheet
 
@@ -57,14 +61,4 @@ class Program
         }
     }
 
-        // Convert Excel column letter to column index (A -> 1, B -> 2, ..., Z -> 26, AA -> 27, ...)
-    //static int ExcelColumnToIndex(string columnName)
-    //{
-    //    int index = 0;
-    //    foreach (char c in columnName)
-    //    {
-    //        index = index * 26 + (c - 'A' + 1);
-    //    }
-    //    return index;
-    //}
 }
